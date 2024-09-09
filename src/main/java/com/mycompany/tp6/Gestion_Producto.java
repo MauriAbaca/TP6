@@ -4,11 +4,12 @@
  */
 package com.mycompany.tp6;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import com.mycompany.tp6.Producto;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+
 
 /**
  *
@@ -16,16 +17,40 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Gestion_Producto extends javax.swing.JFrame {
 
-    private JComboBox<String> categoriaBox;
-    private JTextField nombreProducto;
-    private JTextField precioProducto;
-    private JButton agregar;
-    private JTable tablaProducto;
-    private DefaultTableModel modeloTabla;
-    public Gestion_Producto() {
+     DefaultTableModel tabla = new DefaultTableModel();
+     ArrayList<Producto> listaProducto = new ArrayList<>();
+    
+    {
         initComponents();
+        setModelo();
     }
-
+    
+private void setModelo(){
+    String [] cabecera = {"Nombre","Categoria","Precio($)"};
+    tabla.setColumnIdentifiers(cabecera);
+    jTabla.setModel(tabla);
+}
+private void agregarProducto(){
+    String nombre = textNombre.getText();
+    String categoria = (String) cbCategoria.getSelectedItem();
+    String precio = textPrecio.getText();
+    Producto producto = new Producto(nombre,categoria,Double.parseDouble(precio));
+    listaProducto.add(producto);
+}
+private void setDatos(){
+    Object[] datos = new Object[tabla.getColumnCount()];
+    int i = 1;
+    tabla.setRowCount(0);
+    for(Producto producto : listaProducto){
+        datos[0]= producto.getNombre();
+        datos[1]= producto.getCategoria();
+        datos[2]= producto.getPrecio();
+        
+        i++;
+        tabla.addRow(datos);
+    }
+    jTabla.setModel(tabla);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,19 +79,16 @@ public class Gestion_Producto extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        JTextNombre = new javax.swing.JTextField();
-        JTextPrecio = new javax.swing.JTextField();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        jLabelCategoria = new javax.swing.JLabel();
+        jLabelNombre = new javax.swing.JLabel();
+        jLabelPrecio = new javax.swing.JLabel();
+        cbCategoria = new javax.swing.JComboBox<>();
+        textNombre = new javax.swing.JTextField();
+        textPrecio = new javax.swing.JTextField();
+        agregarButton = new javax.swing.JToggleButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTabla = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -122,47 +144,69 @@ public class Gestion_Producto extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel3.setText("Categoria:");
+        jLabelCategoria.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabelCategoria.setText("Categoria:");
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel4.setText("Nombre:");
+        jLabelNombre.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabelNombre.setText("Nombre:");
 
-        jLabel5.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel5.setText("Precio($):");
+        jLabelPrecio.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabelPrecio.setText("Precio($):");
 
-        jComboBox1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cbCategoria.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        cbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alimentos", "Electrodomesticos", "Ropa" }));
+        cbCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cbCategoriaActionPerformed(evt);
             }
         });
 
-        jToggleButton1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        jToggleButton1.setText("Agregar");
+        textNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textNombreActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        textPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textPrecioActionPerformed(evt);
+            }
+        });
+
+        agregarButton.setBackground(new java.awt.Color(153, 153, 255));
+        agregarButton.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        agregarButton.setForeground(new java.awt.Color(0, 0, 0));
+        agregarButton.setText("Agregar");
+        agregarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarButtonActionPerformed(evt);
+            }
+        });
+
+        jTabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
+        jTabla.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jTable1AncestorAdded(evt);
+                jTablaAncestorAdded(evt);
             }
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
-        jScrollPane4.setViewportView(jTable1);
+        jScrollPane4.setViewportView(jTabla);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -171,16 +215,16 @@ public class Gestion_Producto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                    .addComponent(jLabelNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(JTextNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 171, Short.MAX_VALUE)
-                    .addComponent(JTextPrecio))
+                    .addComponent(textNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbCategoria, javax.swing.GroupLayout.Alignment.LEADING, 0, 171, Short.MAX_VALUE)
+                    .addComponent(textPrecio))
                 .addGap(18, 18, 18)
-                .addComponent(jToggleButton1)
+                .addComponent(agregarButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -193,19 +237,19 @@ public class Gestion_Producto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(jLabel3))
+                        .addComponent(jLabelCategoria))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(JTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelNombre)
+                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agregarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(JTextPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelPrecio)
+                    .addComponent(textPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(194, 194, 194))
@@ -213,14 +257,6 @@ public class Gestion_Producto extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel2.setText("Gestion de Productos");
-
-        jMenu2.setText("Administracion");
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Consultas");
-        jMenuBar1.add(jMenu3);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -234,7 +270,7 @@ public class Gestion_Producto extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(120, 120, 120)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,13 +285,28 @@ public class Gestion_Producto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void cbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCategoriaActionPerformed
+        
+        
+    }//GEN-LAST:event_cbCategoriaActionPerformed
 
-    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1AncestorAdded
+    private void jTablaAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTablaAncestorAdded
+        
+    }//GEN-LAST:event_jTablaAncestorAdded
+
+    private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
+        agregarProducto();
+        setDatos();
+        
+    }//GEN-LAST:event_agregarButtonActionPerformed
+
+    private void textNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNombreActionPerformed
+       
+    }//GEN-LAST:event_textNombreActionPerformed
+
+    private void textPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPrecioActionPerformed
+        
+    }//GEN-LAST:event_textPrecioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,19 +344,15 @@ public class Gestion_Producto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField JTextNombre;
-    private javax.swing.JTextField JTextPrecio;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JToggleButton agregarButton;
+    private javax.swing.JComboBox<String> cbCategoria;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelCategoria;
+    private javax.swing.JLabel jLabelNombre;
+    private javax.swing.JLabel jLabelPrecio;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -317,13 +364,17 @@ public class Gestion_Producto extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTabla;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTextField textNombre;
+    private javax.swing.JTextField textPrecio;
     // End of variables declaration//GEN-END:variables
+
+    
 }
+
